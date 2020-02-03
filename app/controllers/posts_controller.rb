@@ -41,7 +41,7 @@ class PostsController < ApplicationController
     id = params[:id]
 
     # idに一致する投稿を探す
-    post = Post.find_by(id: id)
+    @post = Post.find_by(id: id)
   end
 
   # 投稿更新
