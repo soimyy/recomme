@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   get 'posts/index' => 'posts#index'  # 投稿一覧
   get 'posts/new' => 'posts#new'      # 投稿新規作成
   get 'posts/:id' => 'posts#show'     # 投稿詳細
-  post 'posts/create' => 'posts#create' #　投稿新規作成
+
+  post 'posts/create' => 'posts#create' # 投稿新規作成
+  post 'posts/update' => 'posts#update' # 投稿更新
 
   get '/' => 'home#top'       # トップページ
   get 'about' => 'home#about' # サービス紹介ページ

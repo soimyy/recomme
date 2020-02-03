@@ -9,10 +9,10 @@ class PostsController < ApplicationController
   def show
 
     # URLより、投稿のidを取得する
-    @id = params[:id]
+    id = params[:id]
 
     # idに一致する投稿を探す
-    @post = Post.find_by(id:@id)
+    @post = Post.find_by(id: id)
   end
 
   # 新規作成
@@ -22,14 +22,35 @@ class PostsController < ApplicationController
   # 新規投稿
   def create
 
+    # タイトルを取得する
+    title = params[:title]
+
     # 投稿を生成する
-    @post = Post.new(title: params[:title])
+    post = Post.new(title: title)
 
     # 投稿を保存する
-    @post.save
+    post.save
 
     # 投稿一覧にリダイレクトする
     redirect_to("/posts/index")
   end
 
+  # 投稿更新
+  def update
+
+    # URLより、投稿のidを取得する
+    id = params[:id]
+
+    # idに一致する投稿を探す
+    post = Post.find_by(id: id)
+
+    # 投稿の内容を更新する
+    post.title = params[:title]
+
+    # 投稿を保存する
+    post.save
+
+    # 投稿一覧にリダイレクトする
+    redirect_to("/posts/index")
+  end
 end
