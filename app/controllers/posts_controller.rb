@@ -35,6 +35,15 @@ class PostsController < ApplicationController
     redirect_to("/posts/index")
   end
 
+  def edit
+
+    # URLより、投稿のidを取得する
+    id = params[:id]
+
+    # idに一致する投稿を探す
+    post = Post.find_by(id: id)
+  end
+
   # 投稿更新
   def update
 
