@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   get 'posts/:id' => 'posts#show'       # 投稿詳細
   get "posts/:id/edit" => "posts#edit"  # 投稿編集
 
-  post 'posts/create' => 'posts#create' # 投稿新規作成
-  post 'posts/update' => 'posts#update' # 投稿更新
+  post 'posts/create' => 'posts#create'     # 投稿新規作成
+  post 'posts/:id/update' => 'posts#update' # 投稿更新
 
   get '/' => 'home#top'       # トップページ
   get 'about' => 'home#about' # サービス紹介ページ
