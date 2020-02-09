@@ -64,16 +64,22 @@ class PostsController < ApplicationController
     id = params[:id]
 
     # idに一致する投稿を探す
-    post = Post.find_by(id: id)
+    @post = Post.find_by(id: id)
 
     # 投稿の内容を更新する
-    post.title = params[:title]
+    @post.title = params[:title]
 
-    # 投稿を保存する
-    post.save
-
-    # 投稿一覧にリダイレクトする
-    redirect_to("/posts/index")
+    # 保存に失敗したとき、編集ページへリダイレクトする
+    # if @post.save 
+    #   # 投稿一覧にリダイレクトする
+    #   redirect_to("/posts/index")
+    # else
+    #   #redirect_to("posts/#{post.id}/edit")
+    # end
+    if @post.save == false
+      render("posts/edit")
+    end
+    
   end
 
   #####################
