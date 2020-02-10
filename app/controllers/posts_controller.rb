@@ -4,7 +4,9 @@ class PostsController < ApplicationController
   # 投稿一覧
   #####################
   def index
+
     @posts = Post.all.order(created_at: :desc)
+    return
   end
 
   #####################
@@ -17,12 +19,19 @@ class PostsController < ApplicationController
 
     # idに一致する投稿を探す
     @post = Post.find_by(id: id)
+
+    return
   end
 
   #####################
   # 新規作成
   #####################
   def new
+
+    # 新規投稿
+    @post = Post.new
+
+    return
   end
 
   #####################
@@ -34,13 +43,28 @@ class PostsController < ApplicationController
     title = params[:title]
 
     # 投稿を生成する
-    post = Post.new(title: title)
+    @post = Post.new(title: title)
 
     # 投稿を保存する
-    post.save
+    if @post.save.equal?(false)
+      # 失敗した場合、新規作成画面にリダイレクトする
+      
+      # メッセージ表示
+      flash[:notice] = "投稿できませんでした"
+
+      # リダイレクト
+      render("posts/new")
+
+      return
+    end
+
+    # メッセージ表示
+    flash[:notice] = "投稿しました"
 
     # 投稿一覧にリダイレクトする
     redirect_to("/posts/index")
+
+    return
   end
 
   #####################
@@ -53,6 +77,8 @@ class PostsController < ApplicationController
 
     # idに一致する投稿を探す
     @post = Post.find_by(id: id)
+
+    return
   end
 
   #####################
@@ -70,16 +96,21 @@ class PostsController < ApplicationController
     @post.title = params[:title]
 
     # 保存に失敗したとき、編集ページへリダイレクトする
-    # if @post.save 
-    #   # 投稿一覧にリダイレクトする
-    #   redirect_to("/posts/index")
-    # else
-    #   #redirect_to("posts/#{post.id}/edit")
-    # end
-    if @post.save == false
+    if @post.save.equal?(false)
+
+      # メッセージ表示
+      flash[:notice] = "更新できませんでした"
+
       render("posts/edit")
     end
+
+    # メッセージ表示
+    flash[:notice] = "更新しました"
+
+    # 投稿一覧へリダイレクトする
+    redirect_to("/posts/index")
     
+    return
   end
 
   #####################
@@ -94,9 +125,18 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: id)
     
     # 投稿を削除する
-    @post.destroy
+    if @post.destroy.equal?(false)
+
+      # メッセージを表示する
+      flash[:notice] = "削除できませんでした"
+    end
+
+    # メッセージを表示する
+    flash[:notice] = "削除しました"
 
     # 投稿一覧にリダイレクトする
     redirect_to("/posts/index")
+    return
   end
+  
 end
