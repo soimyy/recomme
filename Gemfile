@@ -55,3 +55,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # 多言語対応
 gem 'rails-i18n'
+
+# add to process unicorn
+# gem 'therubyracer', platforms: :ruby
