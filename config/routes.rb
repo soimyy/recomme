@@ -17,8 +17,13 @@ Rails.application.routes.draw do
   ## ユーザー関連
   ################
   get 'users/index' => 'users#index'    # ユーザー一覧
-
+  get 'users/new'   => 'users#new'      # ユーザー新規作成
+  get 'users/:id'   => 'users#show'     # ユーザー詳細
+  get 'users/:id/edit' => 'users#edit'  # ユーザー編集
   
+  post 'users/:id/update' => 'users#update'     # ユーザー情報更新
+  post 'users/create' => 'users#create'         # ユーザー新規作成
+
   ################
   ## 基本情報関連
   ################
