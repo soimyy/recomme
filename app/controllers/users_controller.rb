@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     def new
 
         # 生成する
-        @user = User.new(name: params[:name], email: params[:email])
+        @user = User.new
 
         return
     end
@@ -38,7 +38,11 @@ class UsersController < ApplicationController
     def create
 
         # 生成する
-        @user = User.new(name: params[:name], email: params[:email])
+        @user = User.new(
+            name: params[:name],
+            email: params[:email],
+            image_name: "default.png",
+        )
 
         # 保存する
         if @user.save.equal?(false)
@@ -83,6 +87,28 @@ class UsersController < ApplicationController
         @user.name = params[:name]
         @user.email = params[:email]
 
+        # 画像の取得に失敗したとき
+        # if params[:image]
+        if params[:image].equal?(false)
+            render("users/edit")
+            return
+        end
+
+        # 画像の情報を取得
+        image_data = params[:image]
+        
+        # データベースのユーザーの画像名を設定する  
+        image_name = "#{@user.id}.jpg"
+        
+        # データベースのユーザーの画像名を更新する
+        @user.image_name = image_name
+        
+        # 画像を保存する    
+        image_directory_path = "public/user_images"
+        image_file_path = File.join(image_directory_path, image_name)
+        File.binwrite(image_file_path, image_data.read)
+        # end
+            
         # 更新の保存に失敗した場合
         if @user.save.equal?(false)
             render("users/edit")
