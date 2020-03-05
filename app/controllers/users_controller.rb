@@ -65,7 +65,7 @@ class UsersController < ApplicationController
     end
 
     ############################
-    ## ユーザー編集
+    ## 編集
     ############################
     def edit
 
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     end
 
     ############################
-    ## ユーザー編集
+    ## 更新
     ############################
     def update
 
@@ -120,4 +120,33 @@ class UsersController < ApplicationController
         redirect_to("/users/#{@user.id}")
         return
     end
+
+    ############################
+    ## ログインフォーム
+    ############################
+    def login_form
+
+    end
+
+    ############################
+    ## ログイン
+    ############################
+    def login
+
+        @user = User.find_by(
+            email: params[:email],
+            password: params[:password],
+        )
+
+        if  @user.equal?(false)
+            render("users/login_form")
+            return
+        end
+
+        flash[:notice] = "ログインしました"
+        redirect_to("/posts/index")
+
+        return
+    end
+
 end
