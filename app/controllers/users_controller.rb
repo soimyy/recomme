@@ -41,6 +41,7 @@ class UsersController < ApplicationController
         @user = User.new(
             name: params[:name],
             email: params[:email],
+            password: params[:password],
             image_name: "default.png",
         )
 
@@ -133,20 +134,22 @@ class UsersController < ApplicationController
     ############################
     def login
 
+        @email = params[:email]
+        @password = params[:password]
+
         @user = User.find_by(
-            email: params[:email],
-            password: params[:password],
+            email: @email,
+            password: @password,
         )
 
-        if  @user.equal?(false)
+        # 確認
+        if  @user
+            # ログイン成功の場合、投稿一覧に遷移する
+            flash[:notice] = "ログインしました"
+            redirect_to("/posts/index")
+        else
             render("users/login_form")
-            return
         end
-
-        flash[:notice] = "ログインしました"
-        redirect_to("/posts/index")
-
-        return
     end
 
 end

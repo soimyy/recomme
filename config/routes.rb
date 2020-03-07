@@ -16,15 +16,15 @@ Rails.application.routes.draw do
   ################
   ## ユーザー関連
   ################
-  get 'users/index' => 'users#index'    # 一覧
-  get 'users/new'   => 'users#new'      # 新規作成
-  get 'users/:id'   => 'users#show'     # 詳細
-  get 'users/:id/edit' => 'users#edit'  # 編集
-  get 'login'       => 'users#login_form'    # ログイン
+  get 'login'       => 'users#login_form'     # ログイン
+  get 'users/index' => 'users#index'          # 一覧
+  get 'users/new'   => 'users#new'            # 新規作成
+  get 'users/:id'   => 'users#show'           # 詳細
+  get 'users/:id/edit' => 'users#edit'        # 編集
 
+  post 'login'            => 'users#login'      # ログインフォーム
   post 'users/:id/update' => 'users#update'     # 情報更新
   post 'users/create' => 'users#create'         # 新規作成
-  post 'login'        => 'users#login'     # ログインフォーム
 
 
   ################
