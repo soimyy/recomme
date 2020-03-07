@@ -1,5 +1,8 @@
 class PostsController < ApplicationController
 
+    # フィルタリング
+    before_action :authenticate_user
+
   #####################
   # 投稿一覧
   #####################

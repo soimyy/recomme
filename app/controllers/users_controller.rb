@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
 
+    # フィルタリング
+    before_action :authenticate_user, {only: [:index, :show, :edit, :update]}
+    before_action :forbid_login_user, {only: [:new, :create, :login_form, :login]}
+    before_action :ensure_correct_user, {only: [:edit, :update]}
+
     ############################
     ## ユーザー一覧
     ############################
@@ -7,7 +12,6 @@ class UsersController < ApplicationController
 
         # 全ユーザー情報の取得
         @users = User.all
-        return
     end
 
     ############################
@@ -56,6 +60,9 @@ class UsersController < ApplicationController
         end
 
         # 保存完了の場合
+        # セッションを保存する
+        session[:user_id] = @user.id
+
         # メッセージを表示する
         flash[:notice] = "登録しました"
 
@@ -123,10 +130,9 @@ class UsersController < ApplicationController
     end
 
     ############################
-    ## ログインフォーム
+    ## ログイン画面
     ############################
     def login_form
-
     end
 
     ############################
@@ -134,22 +140,47 @@ class UsersController < ApplicationController
     ############################
     def login
 
+        # フォームから情報を取得する
         @email = params[:email]
         @password = params[:password]
 
+        # ユーザーを探す
         @user = User.find_by(
             email: @email,
             password: @password,
         )
 
-        # 確認
+        # 確認する
         if  @user
-            # ログイン成功の場合、投稿一覧に遷移する
+
+            # 一致した場合、セッションを保存する
+            session[:user_id] = @user.id
             flash[:notice] = "ログインしました"
             redirect_to("/posts/index")
         else
+
+            # ログイン画面を表示する
             render("users/login_form")
         end
     end
 
+    ############################
+    ## ログイン
+    ############################
+    def logout
+        
+        session[:user_id] = nil
+        flash[:notice] = "ログアウトしました"
+        redirect_to("/login")
+    end
+
+    ############################
+    ## ログインしているユーザーと実行するアクションのユーザーの一致
+    ############################
+    def ensure_correct_user
+        if @current_user.id != params[:id].to_i()
+            flash[:notice] = "権限がありません"
+            redirect_to("/posts/index")
+        end
+    end
 end
